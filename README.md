@@ -62,3 +62,4 @@ Summary:
 This program demonstrates basic expression evaluation using stacks in C++, suitable for educational purposes or as a starting point for building a more advanced calculator.
 
 OUTPUT : 
+![Image](https://github.com/user-attachments/assets/9dccb7a2-efbd-46b4-9852-6c228efa79b7)
