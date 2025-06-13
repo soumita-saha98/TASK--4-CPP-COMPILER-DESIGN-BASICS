@@ -1,0 +1,66 @@
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+// Function that performs calculation
+int doMath(int first, int second, char symbol) {
+    if (symbol == '+') return first + second;
+    if (symbol == '-') return first - second;
+    if (symbol == '*') return first * second;
+    if (symbol == '/' && second != 0) return first / second;
+    return 0;
+}
+
+// Function to evaluate the input string expression
+int evaluate(string input) {
+    stack<int> values;
+    stack<char> operators;
+
+    for (int i = 0; i < input.length(); i++) {
+        if (input[i] == ' ') continue;
+
+        // If it's a number
+        if (isdigit(input[i])) {
+            int num = 0;
+            while (i < input.length() && isdigit(input[i])) {
+                num = num * 10 + (input[i] - '0');
+                i++;
+            }
+            values.push(num);
+            i--; // go back one character
+        }
+        // If it's an operator
+        else if (input[i] == '+' || input[i] == '-' ||
+                 input[i] == '*' || input[i] == '/') {
+            while (!operators.empty()) {
+                int right = values.top(); values.pop();
+                int left = values.top(); values.pop();
+                char op = operators.top(); operators.pop();
+                values.push(doMath(left, right, op));
+            }
+            operators.push(input[i]);
+        }
+    }
+
+    // Final operation
+    while (!operators.empty()) {
+        int right = values.top(); values.pop();
+        int left = values.top(); values.pop();
+        char op = operators.top(); operators.pop();
+        values.push(doMath(left, right, op));
+    }
+
+    return values.top();
+}
+
+int main() {
+    string userInput;
+    cout << "Enter arithmetic expression: ";
+    cin >> userInput;
+
+    int answer = evaluate(userInput);
+    cout << "Final Result = " << answer << endl;
+
+    return 0;
+}
